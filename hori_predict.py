@@ -6,7 +6,7 @@ using Muse Mind Monitor CSV files.
 
 Usage
 -----
-    python hori_detect.py <folder_with_csvs>
+    python hori_detect.py <path/to/csv/folder_or_file>
 
 Outputs
 -------
@@ -220,13 +220,17 @@ def quick_plot(met, title):
     plt.show()
 
 
-def main(folder):
-    csv_files = sorted(
-        f for f in glob.glob(os.path.join(folder, "*.csv"))
-        if "_pred" not in os.path.basename(f)
-    )
+def main(path):
+    if os.path.isdir(path):
+        csv_files = sorted(
+            f for f in glob.glob(os.path.join(path, "*.csv"))
+            if "_pred" not in os.path.basename(f)
+        )
+    else:
+        csv_files = [path]
+
     if not csv_files:
-        print("No CSV files found in", folder)
+        print("No CSV files found in", path)
         return
 
     for path in csv_files:
